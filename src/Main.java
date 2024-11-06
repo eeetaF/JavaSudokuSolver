@@ -6,39 +6,32 @@ import java.util.ArrayList;
 public class Main {
     public class Solver {
         private static int[][] solution;
-        private static int countTrues (boolean[] arr) {
-            int k = 0;
-            for (int i = 0; i < 9; i++) {
-                if (arr[i])
-                    k++;
-            }
-            return k;
-        }
+
+        // I wish there were pointers in java. This property is used as a pointer.
+        private static int current_count;
+
         private static boolean[] project (boolean[] arr1, boolean[] arr2, boolean[] arr3) {
+            current_count = 0;
             boolean[] result = new boolean[9];
             for (int i = 0; i < 9; i++) {
                 if (!arr1[i] && !arr2[i] && !arr3[i]) {
                     result[i] = true;
+                    current_count++;
                 }
             }
             return result;
         }
-        private static ArrayList<Integer> fillIds(int[][] matrix, boolean[][][]may_be, boolean[][]horizontal_lines,
+        private static int findId(int[][] matrix, boolean[][][]may_be, boolean[][]horizontal_lines,
                                                     boolean[][]vertical_lines, boolean[][]square_lines) {
-            ArrayList<Integer> ids = new ArrayList<>();
+            int id = -1;
             int max_count = 10;
             for (int i = 0; i < 9; i++) {
                 for (int j = 0; j < 9; j++) {
                     if (matrix[i][j] == 9) {
                         may_be[i][j] = project(horizontal_lines[i], vertical_lines[j], square_lines[(i / 3) * 3 + j / 3]);
-                        int current_count = countTrues(may_be[i][j]);
                         if (current_count < max_count) {
                             max_count = current_count;
-                            ids = new ArrayList<>();
-                            ids.add(i * 9 + j);
-                        }
-                        else if (current_count == max_count) {
-                            ids.add(i * 9 + j);
+                            id = i * 9 + j;
                         }
                     }
                 }
@@ -46,8 +39,8 @@ public class Main {
             if (max_count == 10)
                 solution = matrix;
             if (max_count == 0)
-                return new ArrayList<>();
-            return ids;
+                return -1;
+            return id;
         }
         private static int[][] copy2Dint (int[][] arr) {
             int[][] copied = new int[arr.length][arr[0].length];
@@ -92,9 +85,9 @@ public class Main {
             vertical_lines[current_j][digit] = true;
             square_lines[(current_i / 3) * 3 + current_j / 3][digit] = true;
             matrix[current_i][current_j] = digit;
-            ArrayList<Integer> ids = fillIds(matrix, may_be, horizontal_lines, vertical_lines, square_lines);
-            if (ids.size() != 0) {
-                findSolution(matrix, may_be, horizontal_lines, vertical_lines, square_lines, ids.get(0));
+            int id = findId(matrix, may_be, horizontal_lines, vertical_lines, square_lines);
+            if (id != -1) {
+                findSolution(matrix, may_be, horizontal_lines, vertical_lines, square_lines, id);
             }
         }
         private static void findSolution(int[][] matrix, boolean[][][]may_be, boolean[][]horizontal_lines,
@@ -122,8 +115,7 @@ public class Main {
                     }
                 }
             }
-            ArrayList<Integer> ids = fillIds(matrix, may_be, horizontal_lines, vertical_lines, square_lines);
-            int id = ids.get(0);
+            int id = findId(matrix, may_be, horizontal_lines, vertical_lines, square_lines);
             findSolution(copy2Dint(matrix), copy3Dbool(may_be), copy2Dbool(horizontal_lines), copy2Dbool(vertical_lines),
                                 copy2Dbool(square_lines), id);
             return solution;
@@ -175,7 +167,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        int[][] initialMatrix = readMatrixFromFile("tests/test.txt");
+        int[][] initialMatrix = readMatrixFromFile("tests/test2.txt");
         long startTime = System.nanoTime();
         int[][] result = new int[9][9];
         for (int i = 0; i < 100; i++)
