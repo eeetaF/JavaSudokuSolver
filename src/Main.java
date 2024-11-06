@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Main {
     public class Solver {
-        private static int[][] solution;
+        private static ArrayList<int[][]> solutions;
 
         // I wish there were pointers in java. This property is used as a pointer.
         private static int current_count;
@@ -37,7 +37,7 @@ public class Main {
                 }
             }
             if (max_count == 10)
-                solution = matrix;
+                solutions.add(matrix);
             if (max_count == 0)
                 return -1;
             return id;
@@ -100,7 +100,8 @@ public class Main {
                             copy2Dbool(square_lines), digit, current_i, current_j);
             }
         }
-        public static int[][] startSolver(int[][] matrix) {
+        public static ArrayList<int[][]> startSolver(int[][] matrix) {
+            solutions = new ArrayList<>();
             boolean [][] horizontal_lines = new boolean[9][9];
             boolean [][] vertical_lines = new boolean[9][9];
             boolean [][] square_lines = new boolean[9][9];
@@ -118,7 +119,7 @@ public class Main {
             int id = findId(matrix, may_be, horizontal_lines, vertical_lines, square_lines);
             findSolution(copy2Dint(matrix), copy3Dbool(may_be), copy2Dbool(horizontal_lines), copy2Dbool(vertical_lines),
                                 copy2Dbool(square_lines), id);
-            return solution;
+            return solutions;
         }
     }
     public static int[][] readMatrixFromFile(String filePath) {
@@ -167,15 +168,24 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        int[][] initialMatrix = readMatrixFromFile("tests/test2.txt");
+        int[][] initialMatrix = readMatrixFromFile("tests/test_multiple.txt");
         long startTime = System.nanoTime();
-        int[][] result = new int[9][9];
+        ArrayList<int[][]> result = new ArrayList<>();
         for (int i = 0; i < 100; i++)
             result = Solver.startSolver(initialMatrix);
         long endTime = System.nanoTime();
         long duration = endTime - startTime;
         System.out.println("Time taken: " + (duration / (1_000_000 * 100)) + " ms");
-        decodeMatrix(result);
-        printMatrix(result);
+        int i = 0;
+        for (int[][] matrix : result) {
+            System.out.println();
+            i++;
+            System.out.println(i + " Solution:");
+            decodeMatrix(matrix);
+            printMatrix(matrix);
+        }
+        // test: 0.5ms
+        //test1: 25ms
+        //test2: 103ms
     }
 }
