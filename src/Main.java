@@ -117,8 +117,9 @@ public class Main {
                 }
             }
             int id = findId(matrix, may_be, horizontal_lines, vertical_lines, square_lines);
-            findSolution(copy2Dint(matrix), copy3Dbool(may_be), copy2Dbool(horizontal_lines), copy2Dbool(vertical_lines),
-                                copy2Dbool(square_lines), id);
+            if (id != -1)
+                findSolution(copy2Dint(matrix), copy3Dbool(may_be), copy2Dbool(horizontal_lines), copy2Dbool(vertical_lines),
+                                    copy2Dbool(square_lines), id);
             return solutions;
         }
     }
@@ -168,7 +169,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        int[][] initialMatrix = readMatrixFromFile("tests/test_multiple.txt");
+        int[][] initialMatrix = readMatrixFromFile("tests/test_complete.txt");
         long startTime = System.nanoTime();
         ArrayList<int[][]> result = new ArrayList<>();
         for (int i = 0; i < 100; i++)
@@ -177,6 +178,9 @@ public class Main {
         long duration = endTime - startTime;
         System.out.println("Time taken: " + (duration / (1_000_000 * 100)) + " ms");
         int i = 0;
+        if (result.size() == 0) {
+            System.out.println("No solutions!");
+        }
         for (int[][] matrix : result) {
             System.out.println();
             i++;
