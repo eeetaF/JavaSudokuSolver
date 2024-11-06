@@ -175,8 +175,14 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        int[][] initialMatrix = readMatrixFromFile("tests/test1.txt");
-        int[][] result = Solver.startSolver(initialMatrix);
+        int[][] initialMatrix = readMatrixFromFile("tests/test.txt");
+        long startTime = System.nanoTime();
+        int[][] result = new int[9][9];
+        for (int i = 0; i < 100; i++)
+            result = Solver.startSolver(initialMatrix);
+        long endTime = System.nanoTime();
+        long duration = endTime - startTime;
+        System.out.println("Time taken: " + (duration / (1_000_000 * 100)) + " ms");
         decodeMatrix(result);
         printMatrix(result);
     }
