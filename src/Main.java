@@ -169,14 +169,13 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        int[][] initialMatrix = readMatrixFromFile("tests/test_complete.txt");
+        int[][] initialMatrix = readMatrixFromFile("tests/test_multiple1.txt");
         long startTime = System.nanoTime();
         ArrayList<int[][]> result = new ArrayList<>();
         for (int i = 0; i < 100; i++)
             result = Solver.startSolver(initialMatrix);
         long endTime = System.nanoTime();
         long duration = endTime - startTime;
-        System.out.println("Time taken: " + (duration / (1_000_000 * 100)) + " ms");
         int i = 0;
         if (result.size() == 0) {
             System.out.println("No solutions!");
@@ -188,6 +187,7 @@ public class Main {
             decodeMatrix(matrix);
             printMatrix(matrix);
         }
+        System.out.println("Time taken: " + (duration / (1_000_000 * 100)) + " ms");
         // test: 0.5ms
         //test1: 25ms
         //test2: 103ms
