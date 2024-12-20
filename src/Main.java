@@ -169,10 +169,11 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        int[][] initialMatrix = readMatrixFromFile("tests/test2.txt");
+        int[][] initialMatrix = readMatrixFromFile("tests/temp_test.txt");
         long startTime = System.nanoTime();
+        int N_OF_TESTS = 1;
         ArrayList<int[][]> result = new ArrayList<>();
-        for (int i = 0; i < 1; i++)
+        for (int i = 0; i < N_OF_TESTS; i++)
             result = Solver.startSolver(initialMatrix);
         long endTime = System.nanoTime();
         long duration = endTime - startTime;
@@ -187,7 +188,7 @@ public class Main {
             decodeMatrix(matrix);
             printMatrix(matrix);
         }
-        System.out.println("Time taken: " + (duration / (1_000_000 * 1)) + " ms");
+        System.out.println("Time taken: " + (duration / (1_000_000 * N_OF_TESTS)) + " ms");
         // test: 0.5ms
         //test1: 25ms
         //test2: 103ms
