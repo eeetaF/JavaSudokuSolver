@@ -16,5 +16,5 @@ Go to project's dir in your console (for example, `cd ~/Documents/GitHub/JavaSud
 
 ### 4.
 ```
-java Main.java
+java src/Main.java
 ```
