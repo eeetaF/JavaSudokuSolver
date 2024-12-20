@@ -184,7 +184,7 @@ public class Main {
         for (int[][] matrix : result) {
             System.out.println();
             i++;
-            System.out.println(i + " Solution:");
+            System.out.println("Solution: " + i);
             decodeMatrix(matrix);
             printMatrix(matrix);
         }
